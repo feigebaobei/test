@@ -1,0 +1,5 @@
+{
+  "chrome_url_overrides" : {
+    "pageToOverride": "html/test.html"
+  }
+}

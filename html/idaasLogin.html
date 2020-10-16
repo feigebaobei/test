@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>idaas login demo</title>
+  <style>
+    body {
+      margin: 30px auto;
+      width: 800px;
+    }
+  </style>
+  <script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdn.staticfile.org/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+  <script src="https://cdn.staticfile.org/axios/0.19.2/axios.js"></script>
+  <script>
+    $(function(){
+      $('#qrcode').qrcode("https://www.cnblogs.com/EzrealLiu/p/5559255.html")
+      function reqUserInfo () {
+        return axios({
+          method: 'get',
+          // url: 'https://www.baidu.com/',
+          // url: 'http://localhost:5188/data/student.json',
+          url: '../data/student.json',
+          data: {
+            key0: 'hello',
+            key1: 1234,
+            key2: ['a', 'b', 'c']
+          }
+        })
+      }
+      var timer = 0
+      function loopReq() {
+        reqUserInfo().then(function(res) {
+          console.log(res)
+          if (res.data.name) { // 假设这是判断是否得到用户信息的条件
+            // 设置一个循环阈值
+            // 正常运行时不应该出来该设置
+            if (timer < 5) {
+              setTimeout(function () {
+                loopReq()
+              }, 1000)
+            }
+            timer++
+          }
+        }).catch(function (err) {
+          console.log(err)
+          if (timer < 5) {
+            setTimeout(function () {
+              loopReq()
+            }, 1000)
+          }
+          timer++
+        })
+      }
+
+      loopReq()
+    })
+  </script>
+</head>
+<body>
+  <h2>扫码登录</h2>
+  <div id="qrcode"></div>
+</body>
+</html>
